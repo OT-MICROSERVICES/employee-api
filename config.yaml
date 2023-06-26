@@ -1,0 +1,10 @@
+scylladb:
+  host: ["172.17.0.3:9042"]
+  username: scylladb
+  password: password
+  keyspace: employee_db
+
+redis:
+  host: 172.17.0.5
+  port: 6379
+  password: password
