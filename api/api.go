@@ -45,7 +45,7 @@ func DetailedHealthCheckAPI(c *gin.Context) {
 	scyllaClient, err := client.CreateScyllaDBClient()
 	if err != nil {
 		data := model.DetailedHealthCheck{
-			Message:          "Employee API is not running. Check application logs",
+			Message:     "Employee API is not running. Check application logs",
 			ScyllaDB:    "down",
 			EmployeeAPI: "down",
 		}
@@ -54,10 +54,9 @@ func DetailedHealthCheckAPI(c *gin.Context) {
 	}
 	defer scyllaClient.Close()
 	data := model.DetailedHealthCheck{
-		Message:          "Employee API is up and running",
+		Message:     "Employee API is up and running",
 		ScyllaDB:    "up",
 		EmployeeAPI: "up",
 	}
 	c.JSON(http.StatusOK, data)
 }
-
