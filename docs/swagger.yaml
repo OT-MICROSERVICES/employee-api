@@ -1,0 +1,63 @@
+basePath: /api/v1
+definitions:
+  model.DetailedHealthCheck:
+    properties:
+      employee_api:
+        type: string
+      message:
+        type: string
+      scylla_db:
+        type: string
+    type: object
+  model.HealthCheck:
+    properties:
+      message:
+        type: string
+    type: object
+info:
+  contact:
+    email: opensource@opstree.com
+    name: Opstree Solutions
+    url: https://opstree.com
+  description: The REST API documentation for employee webserver
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Employee API
+  version: "1.0"
+paths:
+  /health:
+    get:
+      consumes:
+      - application/json
+      description: Do healthcheck
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.HealthCheck'
+      summary: HealthCheckAPI is a method to perform healthcheck of application
+      tags:
+      - healthcheck
+  /health/detail:
+    get:
+      consumes:
+      - application/json
+      description: Do detailed healthcheck
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.DetailedHealthCheck'
+      summary: DetailedHealthCheckAPI is a method to perform detailed healthcheck
+        of application
+      tags:
+      - healthcheck
+schemes:
+- http
+swagger: "2.0"

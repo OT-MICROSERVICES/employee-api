@@ -1,0 +1,94 @@
+{
+    "schemes": [
+        "http"
+    ],
+    "swagger": "2.0",
+    "info": {
+        "description": "The REST API documentation for employee webserver",
+        "title": "Employee API",
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {
+            "name": "Opstree Solutions",
+            "url": "https://opstree.com",
+            "email": "opensource@opstree.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0"
+    },
+    "basePath": "/api/v1",
+    "paths": {
+        "/health": {
+            "get": {
+                "description": "Do healthcheck",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "healthcheck"
+                ],
+                "summary": "HealthCheckAPI is a method to perform healthcheck of application",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.HealthCheck"
+                        }
+                    }
+                }
+            }
+        },
+        "/health/detail": {
+            "get": {
+                "description": "Do detailed healthcheck",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "healthcheck"
+                ],
+                "summary": "DetailedHealthCheckAPI is a method to perform detailed healthcheck of application",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.DetailedHealthCheck"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "model.DetailedHealthCheck": {
+            "type": "object",
+            "properties": {
+                "employee_api": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "scylla_db": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.HealthCheck": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
