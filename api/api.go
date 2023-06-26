@@ -60,3 +60,4 @@ func DetailedHealthCheckAPI(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, data)
 }
+
