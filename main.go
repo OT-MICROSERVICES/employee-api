@@ -1,9 +1,9 @@
 package main
 
 import (
+	docs "employee-api/docs"
 	"employee-api/routes"
 	"github.com/gin-gonic/gin"
-	docs "employee-api/docs"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )

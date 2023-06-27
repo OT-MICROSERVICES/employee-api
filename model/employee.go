@@ -1,32 +1,37 @@
 package model
 
-import (
-	"time"
-)
-
 // Employee struct will be the data mapping interface of all employee REST API data
 type Employee struct {
-	ID             string    `json:"id"`
-	Name           string    `json:"name"`
-	Designation    string    `json:"designation"`
-	Department     string    `json:"department"`
-	JoiningDate    time.Time `json:"joining_date"`
-	Address        string    `json:"address"`
-	OfficeLocation string    `json:"office_location"`
-	Status         string    `json:"status"`
-	EmailID        string    `json:"email"`
-	AnnualPackage  float64   `json:"annual_package"`
-	PhoneNumber    string    `json:"phone_number"`
+	ID             string  `json:"id"`
+	Name           string  `json:"name"`
+	Designation    string  `json:"designation"`
+	Department     string  `json:"department"`
+	JoiningDate    string  `json:"joining_date"`
+	Address        string  `json:"address"`
+	OfficeLocation string  `json:"office_location"`
+	Status         string  `json:"status"`
+	EmailID        string  `json:"email"`
+	AnnualPackage  float32 `json:"annual_package"`
+	PhoneNumber    string  `json:"phone_number"`
 }
 
-// HealthCheck is a structure for health check information
-type HealthCheck struct {
+// CustomMessage is a structure for custom message with Gin
+type CustomMessage struct {
 	Message string `json:"message"`
 }
 
-// DetailedHealthCheck is a structure for detailed health check information
-type DetailedHealthCheck struct {
-	Message string `json:"message"`
-	ScyllaDB string `json:"scylla_db"`
-	EmployeeAPI string `json:"employee_api"`
+// Location is a struct for mapping location interface of all employees
+type Location struct {
+	Noida     int `json:"Noida"`
+	Bangalore int `json:"Bangalore"`
+	Hyderabad int `json:"Hyderabad"`
+	Delaware  int `json:"Delaware"`
+}
+
+// Designation is a struct for mapping designation interface for all employees
+type Designation struct {
+	DevOpsConsultant  int `json:"DevOps Consultant"`
+	DevOpsSpecialist  int `json:"DevOps Specialist"`
+	GrowthPartner     int `json:"Growth Partner"`
+	ConsultantPartner int `json:"Consultant Partner"`
 }

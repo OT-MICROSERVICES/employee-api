@@ -25,6 +25,40 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/create": {
+            "post": {
+                "description": "Write data in database",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "employee"
+                ],
+                "summary": "CreateEmployeeData is a method to write employee information in database",
+                "parameters": [
+                    {
+                        "description": "Employee Data",
+                        "name": "employee",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.Employee"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.Employee"
+                        }
+                    }
+                }
+            }
+        },
         "/health": {
             "get": {
                 "description": "Do healthcheck",
@@ -42,7 +76,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/model.HealthCheck"
+                            "$ref": "#/definitions/model.CustomMessage"
                         }
                     }
                 }
@@ -70,9 +104,138 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/search": {
+            "get": {
+                "description": "Read data from database",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "employee"
+                ],
+                "summary": "ReadEmployeeData is a method to read employee information",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User ID",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.Employee"
+                        }
+                    }
+                }
+            }
+        },
+        "/search/all": {
+            "get": {
+                "description": "Read all employee data from database",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "employee"
+                ],
+                "summary": "ReadCompleteEmployeesData is a method to read all employee's information",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.Employee"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/search/designation": {
+            "get": {
+                "description": "Read all employee location data from database",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "employee"
+                ],
+                "summary": "ReadEmployeesDesignation is a method to read all employee designation",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.Designation"
+                        }
+                    }
+                }
+            }
+        },
+        "/search/location": {
+            "get": {
+                "description": "Read all employee location data from database",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "employee"
+                ],
+                "summary": "ReadEmployeesLocation is a method to read all employee location",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.Location"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
+        "model.CustomMessage": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.Designation": {
+            "type": "object",
+            "properties": {
+                "Consultant Partner": {
+                    "type": "integer"
+                },
+                "DevOps Consultant": {
+                    "type": "integer"
+                },
+                "DevOps Specialist": {
+                    "type": "integer"
+                },
+                "Growth Partner": {
+                    "type": "integer"
+                }
+            }
+        },
         "model.DetailedHealthCheck": {
             "type": "object",
             "properties": {
@@ -87,11 +250,58 @@ const docTemplate = `{
                 }
             }
         },
-        "model.HealthCheck": {
+        "model.Employee": {
             "type": "object",
             "properties": {
-                "message": {
+                "address": {
                     "type": "string"
+                },
+                "annual_package": {
+                    "type": "number"
+                },
+                "department": {
+                    "type": "string"
+                },
+                "designation": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "joining_date": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "office_location": {
+                    "type": "string"
+                },
+                "phone_number": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.Location": {
+            "type": "object",
+            "properties": {
+                "Bangalore": {
+                    "type": "integer"
+                },
+                "Delaware": {
+                    "type": "integer"
+                },
+                "Hyderabad": {
+                    "type": "integer"
+                },
+                "Noida": {
+                    "type": "integer"
                 }
             }
         }
