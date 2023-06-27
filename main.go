@@ -4,6 +4,7 @@ import (
 	docs "employee-api/docs"
 	"employee-api/routes"
 	"github.com/gin-gonic/gin"
+	"github.com/penglongli/gin-metrics/ginmetrics"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
@@ -24,6 +25,11 @@ var router = gin.Default()
 // @BasePath /api/v1
 // @schemes http
 func main() {
+	monitor := ginmetrics.GetMonitor()
+	monitor.SetMetricPath("/metrics")
+	monitor.SetSlowTime(1)
+	monitor.SetDuration([]float64{0.1, 0.3, 1.2, 5, 10})
+	monitor.Use(router)
 	v1 := router.Group("/api/v1")
 	docs.SwaggerInfo.BasePath = "/api/v1/employee"
 	routes.CreateRouterForEmployee(v1)
