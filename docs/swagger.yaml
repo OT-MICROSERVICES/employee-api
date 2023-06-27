@@ -1,5 +1,21 @@
 basePath: /api/v1
 definitions:
+  model.CustomMessage:
+    properties:
+      message:
+        type: string
+    type: object
+  model.Designation:
+    properties:
+      Consultant Partner:
+        type: integer
+      DevOps Consultant:
+        type: integer
+      DevOps Specialist:
+        type: integer
+      Growth Partner:
+        type: integer
+    type: object
   model.DetailedHealthCheck:
     properties:
       employee_api:
@@ -9,10 +25,41 @@ definitions:
       scylla_db:
         type: string
     type: object
-  model.HealthCheck:
+  model.Employee:
     properties:
-      message:
+      address:
         type: string
+      annual_package:
+        type: number
+      department:
+        type: string
+      designation:
+        type: string
+      email:
+        type: string
+      id:
+        type: string
+      joining_date:
+        type: string
+      name:
+        type: string
+      office_location:
+        type: string
+      phone_number:
+        type: string
+      status:
+        type: string
+    type: object
+  model.Location:
+    properties:
+      Bangalore:
+        type: integer
+      Delaware:
+        type: integer
+      Hyderabad:
+        type: integer
+      Noida:
+        type: integer
     type: object
 info:
   contact:
@@ -27,6 +74,28 @@ info:
   title: Employee API
   version: "1.0"
 paths:
+  /create:
+    post:
+      consumes:
+      - application/json
+      description: Write data in database
+      parameters:
+      - description: Employee Data
+        in: body
+        name: employee
+        required: true
+        schema:
+          $ref: '#/definitions/model.Employee'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Employee'
+      summary: CreateEmployeeData is a method to write employee information in database
+      tags:
+      - employee
   /health:
     get:
       consumes:
@@ -38,7 +107,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.HealthCheck'
+            $ref: '#/definitions/model.CustomMessage'
       summary: HealthCheckAPI is a method to perform healthcheck of application
       tags:
       - healthcheck
@@ -58,6 +127,74 @@ paths:
         of application
       tags:
       - healthcheck
+  /search:
+    get:
+      consumes:
+      - application/json
+      description: Read data from database
+      parameters:
+      - description: User ID
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Employee'
+      summary: ReadEmployeeData is a method to read employee information
+      tags:
+      - employee
+  /search/all:
+    get:
+      consumes:
+      - application/json
+      description: Read all employee data from database
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.Employee'
+            type: array
+      summary: ReadCompleteEmployeesData is a method to read all employee's information
+      tags:
+      - employee
+  /search/designation:
+    get:
+      consumes:
+      - application/json
+      description: Read all employee location data from database
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Designation'
+      summary: ReadEmployeesDesignation is a method to read all employee designation
+      tags:
+      - employee
+  /search/location:
+    get:
+      consumes:
+      - application/json
+      description: Read all employee location data from database
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Location'
+      summary: ReadEmployeesLocation is a method to read all employee location
+      tags:
+      - employee
 schemes:
 - http
 swagger: "2.0"
