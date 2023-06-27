@@ -5,7 +5,7 @@ import (
 	"github.com/spf13/viper"
 )
 
-// ReadConfigAndProperty is a method for getting the config file details
+// ReadConfigAndProperty is a method for getting the configuration file details
 func ReadConfigAndProperty() (model.Config, error) {
 	var config model.Config
 	viper.SetConfigName("config")

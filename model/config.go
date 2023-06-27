@@ -10,7 +10,7 @@ type Config struct {
 	} `yaml:"scylladb"`
 	Redis struct {
 		Host     string `yaml:"host"`
-		Port     int    `yaml:"port"`
 		Password string `yaml:"password"`
+		Database int    `yaml:"database"`
 	} `yaml:"redis"`
 }
