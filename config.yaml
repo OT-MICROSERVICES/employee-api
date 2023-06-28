@@ -5,6 +5,7 @@ scylladb:
   keyspace: employee_db
 
 redis:
-  host: 172.17.0.5
-  port: 6379
+  enabled: true
+  host: 172.17.0.4:6379
   password: password
+  database: 0

@@ -9,10 +9,7 @@ import (
 
 // CreateScyllaDBClient is a method to create client connection for ScyllaDB
 func CreateScyllaDBClient() (*gocql.Session, error) {
-	config, err := config.ReadConfigAndProperty()
-	if err != nil {
-		logrus.Errorf("Unable to read the configuration file: %v", err)
-	}
+	config := config.ReadConfigAndProperty()
 	client := gocql.NewCluster(config.ScyllaDB.Host...)
 	fallback := gocql.RoundRobinHostPolicy()
 	client.PoolConfig.HostSelectionPolicy = gocql.TokenAwareHostPolicy(fallback)
