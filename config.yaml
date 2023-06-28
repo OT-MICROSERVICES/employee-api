@@ -5,7 +5,7 @@ scylladb:
   keyspace: employee_db
 
 redis:
-  enabled: true
+  enabled: false
   host: 172.17.0.4:6379
   password: password
   database: 0
