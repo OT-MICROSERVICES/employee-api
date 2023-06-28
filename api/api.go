@@ -2,12 +2,18 @@ package api
 
 import (
 	"employee-api/client"
+	"employee-api/config"
 	"employee-api/model"
 	"encoding/json"
 	"github.com/gin-gonic/gin"
+	"github.com/redis/go-redis/v9"
 	"github.com/sirupsen/logrus"
 	"net/http"
 	"time"
+)
+
+var (
+	redisEnabled = config.ReadConfigAndProperty().Redis.Enabled
 )
 
 // @Summary ReadEmployeesDesignation is a method to read all employee designation
@@ -22,6 +28,20 @@ import (
 func ReadEmployeesDesignation(c *gin.Context) {
 	var employee model.Employee
 	var designationResponse model.Designation
+	var redisError error
+	var redisData string
+	if redisEnabled {
+		redisData, redisError = client.CreateRedisClient().HGet(ctx, "employee", "designation").Result()
+		if redisError != nil {
+			logrus.Warnf("Unable to read data from Redis %v", redisError)
+		}
+		json.Unmarshal([]byte(redisData), &designationResponse)
+		if redisError == nil {
+			logrus.Infof("Successfully fetched the data for designation from the Redis")
+			c.JSON(http.StatusOK, designationResponse)
+			return
+		}
+	}
 	scyllaClient, err := client.CreateScyllaDBClient()
 	if err != nil {
 		logrus.Errorf("Error in reading data from scylladb: %v", err)
@@ -44,8 +64,13 @@ func ReadEmployeesDesignation(c *gin.Context) {
 		errorResponse(c, "Cannot read data from the system, request failure")
 		return
 	}
+	if redisEnabled && redisError == redis.Nil {
+		writeinRedis("designation", string(jsonData))
+	}
+	logrus.Infof("Successfully fetched the data for all designation from the ScyllaDB")
 	json.Unmarshal(jsonData, &designationResponse)
 	c.JSON(http.StatusOK, designationResponse)
+	return
 }
 
 // @Summary ReadEmployeesLocation is a method to read all employee location
@@ -60,6 +85,20 @@ func ReadEmployeesDesignation(c *gin.Context) {
 func ReadEmployeesLocation(c *gin.Context) {
 	var employee model.Employee
 	var locationResponse model.Location
+	var redisError error
+	var redisData string
+	if redisEnabled {
+		redisData, redisError = client.CreateRedisClient().HGet(ctx, "employee", "location").Result()
+		if redisError != nil {
+			logrus.Warnf("Unable to read data from Redis %v", redisError)
+		}
+		json.Unmarshal([]byte(redisData), &locationResponse)
+		if redisError == nil {
+			logrus.Infof("Successfully fetched the data for location from the Redis")
+			c.JSON(http.StatusOK, locationResponse)
+			return
+		}
+	}
 	scyllaClient, err := client.CreateScyllaDBClient()
 	if err != nil {
 		logrus.Errorf("Error in reading data from scylladb: %v", err)
@@ -82,8 +121,13 @@ func ReadEmployeesLocation(c *gin.Context) {
 		errorResponse(c, "Cannot read data from the system, request failure")
 		return
 	}
+	if redisEnabled && redisError == redis.Nil {
+		writeinRedis("location", string(jsonData))
+	}
+	logrus.Infof("Successfully fetched the data for all location from the ScyllaDB")
 	json.Unmarshal(jsonData, &locationResponse)
 	c.JSON(http.StatusOK, locationResponse)
+	return
 }
 
 // @Summary ReadCompleteEmployeesData is a method to read all employee's information
@@ -98,6 +142,20 @@ func ReadEmployeesLocation(c *gin.Context) {
 func ReadCompleteEmployeesData(c *gin.Context) {
 	var employee model.Employee
 	var response []model.Employee
+	var redisError error
+	var redisData string
+	if redisEnabled {
+		redisData, redisError = client.CreateRedisClient().HGet(ctx, "employee", "all_data").Result()
+		if redisError != nil {
+			logrus.Warnf("Unable to read data from Redis %v", redisError)
+		}
+		json.Unmarshal([]byte(redisData), &response)
+		if redisError == nil {
+			logrus.Infof("Successfully fetched the data for all employee from the Redis")
+			c.JSON(http.StatusOK, response)
+			return
+		}
+	}
 	scyllaClient, err := client.CreateScyllaDBClient()
 	if err != nil {
 		logrus.Errorf("Error in reading data from scylladb: %v", err)
@@ -108,6 +166,16 @@ func ReadCompleteEmployeesData(c *gin.Context) {
 	for data.Scan(&employee.ID, &employee.Name, &employee.Designation, &employee.Department, &employee.JoiningDate, &employee.Address, &employee.OfficeLocation, &employee.Status, &employee.EmailID, &employee.AnnualPackage, &employee.PhoneNumber) {
 		response = append(response, employee)
 	}
+	jsonData, err := json.Marshal(response)
+	if err != nil {
+		logrus.Errorf("Error in reading data from scylladb: %v", err)
+		errorResponse(c, "Cannot read data from the system, request failure")
+		return
+	}
+	if redisEnabled && redisError == redis.Nil {
+		writeinRedis("all_data", string(jsonData))
+	}
+	logrus.Infof("Successfully fetched the data for all employee from the ScyllaDB")
 	c.JSON(http.StatusOK, response)
 }
 
@@ -124,11 +192,25 @@ func ReadCompleteEmployeesData(c *gin.Context) {
 func ReadEmployeeData(c *gin.Context) {
 	var response model.Employee
 	mapData := map[string]interface{}{}
+	var redisError error
+	var redisData string
 	id, keyExists := c.GetQuery("id")
 	if !keyExists {
 		logrus.Errorf("Query request of data without params")
 		errorResponse(c, "Unable to perform search operation, query params not defined")
 		return
+	}
+	if redisEnabled {
+		redisData, redisError = client.CreateRedisClient().HGet(ctx, "employee", id).Result()
+		if redisError != nil {
+			logrus.Warnf("Unable to read data from Redis %v", redisError)
+		}
+		json.Unmarshal([]byte(redisData), &response)
+		if redisError == nil {
+			logrus.Infof("Successfully fetched the data for %s from the Redis", id)
+			c.JSON(http.StatusOK, response)
+			return
+		}
 	}
 	scyllaClient, err := client.CreateScyllaDBClient()
 	if err != nil {
@@ -144,9 +226,14 @@ func ReadEmployeeData(c *gin.Context) {
 			errorResponse(c, "Cannot read data from the system, request failure")
 			return
 		}
+		if redisEnabled && redisError == redis.Nil {
+			writeinRedis(id, string(jsonData))
+		}
 		json.Unmarshal(jsonData, &response)
+		logrus.Infof("Successfully fetched the data for %s from the ScyllaDB", id)
+		c.JSON(http.StatusOK, response)
+		return
 	}
-	c.JSON(http.StatusOK, response)
 }
 
 // @Summary CreateEmployeeData is a method to write employee information in database
@@ -194,6 +281,15 @@ func CreateEmployeeData(c *gin.Context) {
 	c.JSON(http.StatusOK, data)
 }
 
+// writeinRedis is a method to write the data in Redis cache
+func writeinRedis(cacheKey, cacheValue string) {
+	_, err := client.CreateRedisClient().HSet(ctx, "employee", cacheKey, cacheValue).Result()
+	if err != nil {
+		logrus.Errorf("Error in reading writing data to Redis: %v", err)
+	}
+}
+
+// errorResponse is a method to return bad http code in Gin
 func errorResponse(c *gin.Context, err string) {
 	c.JSON(http.StatusBadRequest, model.CustomMessage{
 		Message: err,

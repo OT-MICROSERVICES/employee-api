@@ -6,7 +6,7 @@ import (
 )
 
 // ReadConfigAndProperty is a method for getting the configuration file details
-func ReadConfigAndProperty() (model.Config, error) {
+func ReadConfigAndProperty() model.Config {
 	var config model.Config
 	viper.SetConfigName("config")
 	viper.SetConfigType("yaml")
@@ -14,8 +14,8 @@ func ReadConfigAndProperty() (model.Config, error) {
 	viper.AddConfigPath(".")
 	err := viper.ReadInConfig()
 	if err != nil {
-		return config, err
+		return config
 	}
 	err = viper.Unmarshal(&config)
-	return config, nil
+	return config
 }

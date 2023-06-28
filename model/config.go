@@ -12,5 +12,6 @@ type Config struct {
 		Host     string `yaml:"host"`
 		Password string `yaml:"password"`
 		Database int    `yaml:"database"`
+		Enabled  bool   `yaml:"enabled"`
 	} `yaml:"redis"`
 }
