@@ -23,4 +23,55 @@ For running the application, we need following things configured:
 
 ![](./static/employee.png)
 
+## Application 
+
+For building the application, we can use `make` command. The same command can be used to build docker image as well.
+
+```shell
+make build
+make docker-build
+```
+
+For execution of the unit test cases, code coverage reports, etc. We can use `go test` command.
+
+```shell
+go test $(go list ./... | grep -v docs | grep -v model | grep -v main.go) -coverprofile cover.out
+# For HTML report visualization
+go tool cover -html=cover.out
+```
+
+The test cases are covered for only these packages:-
+- api
+- client
+- config
+- middleware
+- routes
+
+For dev testing, the [Swagger](https://swagger.io/) UI can be used for sample payload generation and requests. The swagger page will be accessible on http://localhost:8080/swagger/index.html
+
+To run the application, simple binary commands can be used. Before running the application, we have to make sure our mandatory database (ScyllaDB) is up and running. Configuration properties will be configured inside [config.yaml](./config.yaml) file.
+
+```shell
+./scripts.db_init.sh
+```
+
+Before running the database initialization script, make sure your environment variables are configured properly.
+
+```shell
+SCYLLADB_HOST="${SCYLLADB_HOST:=localhost}"
+SCYLLADB_USERNAME="${SCYLLADB_USERNAME:=cassandra}"
+SCYLLADB_PASSWORD="${SCYLLADB_PASSWORD:=cassandra}"
+REPLICATION_FACTOR="${DATABASE_REPLICATION_FACTOR:=1}"
+```
+
+Once the keyspace and table is initialized, we can run the application by:
+
+```shell
+export GIN_MODE=release
+# For debugging set gin mode to development
+./employee-api
+```
+## Endpoints Information
+
+## Contact Information
 
