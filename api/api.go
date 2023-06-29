@@ -6,7 +6,7 @@ import (
 	"employee-api/model"
 	"encoding/json"
 	"github.com/gin-gonic/gin"
-	"github.com/redis/go-redis/v9"
+	redis "github.com/redis/go-redis/v9"
 	"github.com/sirupsen/logrus"
 	"net/http"
 	"time"
@@ -35,7 +35,7 @@ func ReadEmployeesDesignation(c *gin.Context) {
 		if redisError != nil {
 			logrus.Warnf("Unable to read data from Redis %v", redisError)
 		}
-		json.Unmarshal([]byte(redisData), &designationResponse)
+		_ = json.Unmarshal([]byte(redisData), &designationResponse)
 		if redisError == nil {
 			logrus.Infof("Successfully fetched the data for designation from the Redis")
 			c.JSON(http.StatusOK, designationResponse)
