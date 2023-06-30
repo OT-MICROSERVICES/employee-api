@@ -10,7 +10,7 @@ GOBIN=$(shell go env GOBIN)
 endif
 
 # Build employee binary
-build:
+build: fmt
 	go build -o employee-api
 
 # Run go fmt against code

@@ -83,6 +83,7 @@ export GIN_MODE=release
 | /api/v1/employee/search/all         | GET        | Endpoint for searching all information across the system                                          |
 | /api/v1/employee/search/location    | GET        | Application endpoint for getting the count and information of location                            |
 | /api/v1/employee/search/designation | GET        | Application endpoint for getting the count and information of designation                         |
+| /swagger/index.html                 | GET        | Swagger endpoint for the application API documentation and their data models                      |
 
 ## Contact Information
 
