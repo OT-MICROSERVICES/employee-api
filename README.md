@@ -73,5 +73,17 @@ export GIN_MODE=release
 ```
 ## Endpoints Information
 
+| **Endpoint**                        | **Method** | **Description**                                                                                   |
+|-------------------------------------|------------|---------------------------------------------------------------------------------------------------|
+| /metrics                            | GET        | Application healthcheck and performance metrics are available on this endpoint                    |
+| /api/v1/employee/health             | GET        | Endpoint for providing shallow healthcheck information about application health and readiness     |
+| /api/v1/employee/health/detail      | GET        | Endpoint for providing detailed health check about dependencies as well like - ScyllaDB and Redis |
+| /api/v1/employee/create             | POST       | Data creation endpoint which accepts certain JSON body to add employee information in database    |
+| /api/v1/employee/search             | GET        | Endpoint for searching data information using the params in the URL                               |
+| /api/v1/employee/search/all         | GET        | Endpoint for searching all information across the system                                          |
+| /api/v1/employee/search/location    | GET        | Application endpoint for getting the count and information of location                            |
+| /api/v1/employee/search/designation | GET        | Application endpoint for getting the count and information of designation                         |
+
 ## Contact Information
 
+[Opstree Opensource](mailto:opensource@opstree.com)
