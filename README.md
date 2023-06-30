@@ -1,4 +1,6 @@
-# Employee REST API
+<p align="center">
+  <img src="./static/employee-api-logo.svg" height="330" width="330">
+</p>
 
 Employee REST API is a golang based microservice which is responsible for all the employee related transactions in the [OT-Microservices](https://github.com/OT-MICROSERVICES). This application is completely platform independent and can be run on any kind of platform.
 
