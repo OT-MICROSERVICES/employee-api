@@ -51,19 +51,10 @@ The test cases are covered for only these packages:-
 
 For dev testing, the [Swagger](https://swagger.io/) UI can be used for sample payload generation and requests. The swagger page will be accessible on http://localhost:8080/swagger/index.html
 
-To run the application, simple binary commands can be used. Before running the application, we have to make sure our mandatory database (ScyllaDB) is up and running. Configuration properties will be configured inside [config.yaml](./config.yaml) file.
+To run the application, simple binary commands can be used. Before running the application, we have to make sure our mandatory database (ScyllaDB) is up and running. Configuration properties will be configured inside [config.yaml](./config.yaml) file. Also, once the property file is defined and configured properly, we need to run migrations to create database, schema etc. The connection details for migration is available in [migration.json](./migration.json).
 
 ```shell
-./scripts.db_init.sh
-```
-
-Before running the database initialization script, make sure your environment variables are configured properly.
-
-```shell
-SCYLLADB_HOST="${SCYLLADB_HOST:=localhost}"
-SCYLLADB_USERNAME="${SCYLLADB_USERNAME:=cassandra}"
-SCYLLADB_PASSWORD="${SCYLLADB_PASSWORD:=cassandra}"
-REPLICATION_FACTOR="${DATABASE_REPLICATION_FACTOR:=1}"
+make run-migrations
 ```
 
 Once the keyspace and table is initialized, we can run the application by:

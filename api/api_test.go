@@ -27,7 +27,6 @@ func TestCreateEmployeeData(t *testing.T) {
 		OfficeLocation: "Noida",
 		Status:         "Active Employee",
 		EmailID:        "abhishek@example.com",
-		AnnualPackage:  1500000,
 		PhoneNumber:    "9999999999",
 	}
 	jsonValue, _ := json.Marshal(employeeInfo)

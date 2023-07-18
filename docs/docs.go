@@ -245,6 +245,9 @@ const docTemplate = `{
                 "message": {
                     "type": "string"
                 },
+                "redis": {
+                    "type": "string"
+                },
                 "scylla_db": {
                     "type": "string"
                 }
@@ -255,9 +258,6 @@ const docTemplate = `{
             "properties": {
                 "address": {
                     "type": "string"
-                },
-                "annual_package": {
-                    "type": "number"
                 },
                 "department": {
                     "type": "string"

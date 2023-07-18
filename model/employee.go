@@ -2,17 +2,16 @@ package model
 
 // Employee struct will be the data mapping interface of all employee REST API data
 type Employee struct {
-	ID             string  `json:"id"`
-	Name           string  `json:"name"`
-	Designation    string  `json:"designation"`
-	Department     string  `json:"department"`
-	JoiningDate    string  `json:"joining_date"`
-	Address        string  `json:"address"`
-	OfficeLocation string  `json:"office_location"`
-	Status         string  `json:"status"`
-	EmailID        string  `json:"email"`
-	AnnualPackage  float32 `json:"annual_package"`
-	PhoneNumber    string  `json:"phone_number"`
+	ID             string `json:"id"`
+	Name           string `json:"name"`
+	Designation    string `json:"designation"`
+	Department     string `json:"department"`
+	JoiningDate    string `json:"joining_date"`
+	Address        string `json:"address"`
+	OfficeLocation string `json:"office_location"`
+	Status         string `json:"status"`
+	EmailID        string `json:"email"`
+	PhoneNumber    string `json:"phone_number"`
 }
 
 // CustomMessage is a structure for custom message with Gin

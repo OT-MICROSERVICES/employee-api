@@ -22,6 +22,8 @@ definitions:
         type: string
       message:
         type: string
+      redis:
+        type: string
       scylla_db:
         type: string
     type: object
@@ -29,8 +31,6 @@ definitions:
     properties:
       address:
         type: string
-      annual_package:
-        type: number
       department:
         type: string
       designation:

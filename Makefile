@@ -26,3 +26,9 @@ docker-build:
 
 docker-push:
 	docker push ${IMAGE_REGISTRY}/${IMAGE_NAME}:${APP_VERSION}
+
+swagger:
+	swag init -g main.go
+
+run-migrations:
+	migrate -source file://migration -database "$(shell cat migration.json | jq -r '.database')" up
