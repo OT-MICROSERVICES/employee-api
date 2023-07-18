@@ -162,8 +162,8 @@ func ReadCompleteEmployeesData(c *gin.Context) {
 		errorResponse(c, "Cannot read data from the system, request failure")
 		return
 	}
-	data := scyllaClient.Query("SELECT id, name, designation, department, joining_date, address, office_location, status, email, annual_package, phone_number FROM employee_info").Iter()
-	for data.Scan(&employee.ID, &employee.Name, &employee.Designation, &employee.Department, &employee.JoiningDate, &employee.Address, &employee.OfficeLocation, &employee.Status, &employee.EmailID, &employee.AnnualPackage, &employee.PhoneNumber) {
+	data := scyllaClient.Query("SELECT id, name, designation, department, joining_date, address, office_location, status, email, phone_number FROM employee_info").Iter()
+	for data.Scan(&employee.ID, &employee.Name, &employee.Designation, &employee.Department, &employee.JoiningDate, &employee.Address, &employee.OfficeLocation, &employee.Status, &employee.EmailID, &employee.PhoneNumber) {
 		response = append(response, employee)
 	}
 	jsonData, err := json.Marshal(response)
@@ -266,10 +266,10 @@ func CreateEmployeeData(c *gin.Context) {
 		errorResponse(c, "Cannot write data to the system, request failure")
 		return
 	}
-	queryString := "INSERT INTO employee_info(id, name, designation, department, joining_date, address, office_location, status, email, annual_package, phone_number) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+	queryString := "INSERT INTO employee_info(id, name, designation, department, joining_date, address, office_location, status, email, phone_number) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
 
 	if err := scyllaClient.Query(queryString,
-		request.ID, request.Name, request.Designation, request.Department, date, request.Address, request.OfficeLocation, request.Status, request.EmailID, request.AnnualPackage, request.PhoneNumber).Exec(); err != nil {
+		request.ID, request.Name, request.Designation, request.Department, date, request.Address, request.OfficeLocation, request.Status, request.EmailID, request.PhoneNumber).Exec(); err != nil {
 		logrus.Errorf("Error in writing data to scylladb: %v", err)
 		errorResponse(c, "Cannot write data to the system, request failure")
 		return
