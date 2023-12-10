@@ -5,6 +5,7 @@ go 1.20
 replace github.com/gocql/gocql => github.com/scylladb/gocql v1.10.0
 
 require (
+	github.com/gin-contrib/cors v1.4.0
 	github.com/gin-gonic/gin v1.9.1
 	github.com/gocql/gocql v1.5.2
 	github.com/penglongli/gin-metrics v0.1.10

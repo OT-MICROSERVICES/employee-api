@@ -4,6 +4,7 @@ import (
 	docs "employee-api/docs"
 	"employee-api/middleware"
 	"employee-api/routes"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/penglongli/gin-metrics/ginmetrics"
 	"github.com/sirupsen/logrus"
@@ -37,6 +38,13 @@ func main() {
 	monitor.SetSlowTime(1)
 	monitor.SetDuration([]float64{0.1, 0.3, 1.2, 5, 10})
 	monitor.Use(router)
+
+	corsConfig := cors.DefaultConfig()
+	corsConfig.AllowAllOrigins = true
+	corsConfig.AddAllowHeaders("Authorization")
+	corsConfig.AddExposeHeaders("Content-Length")
+	router.Use(cors.New(corsConfig))
+
 	router.Use(gin.Recovery())                  // NEW
 	router.Use(middlewares.LoggingMiddleware()) // NEW
 	v1 := router.Group("/api/v1")

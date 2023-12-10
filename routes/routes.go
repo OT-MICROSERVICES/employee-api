@@ -15,5 +15,6 @@ func CreateRouterForEmployee(routerGroup *gin.RouterGroup) {
 	employee.GET("/search", api.ReadEmployeeData)
 	employee.GET("/search/all", api.ReadCompleteEmployeesData)
 	employee.GET("/search/location", api.ReadEmployeesLocation)
+	employee.GET("/search/status", api.ReadEmployeeStatus)
 	employee.GET("/search/designation", api.ReadEmployeesDesignation)
 }
