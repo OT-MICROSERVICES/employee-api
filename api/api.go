@@ -130,6 +130,63 @@ func ReadEmployeesLocation(c *gin.Context) {
 	return
 }
 
+// @Summary ReadEmployeesStatus is a method to read all employee status
+// @Schemes http
+// @Description Read all employee status data from database
+// @Tags employee
+// @Accept json
+// @Produce json
+// @Success 200 {object} model.status
+// @Router /search/status [get]
+// ReadEmployeeStatus is a method to read all employee status
+func ReadEmployeeStatus(c *gin.Context) {
+	var employee model.Employee
+	var StatusResponse model.Status
+	var redisError error
+	var redisData string
+	if redisEnabled {
+		redisData, redisError = client.CreateRedisClient().HGet(ctx, "employee", "status").Result()
+		if redisError != nil {
+			logrus.Warnf("Unable to read data from Redis %v", redisError)
+		}
+		json.Unmarshal([]byte(redisData), &StatusResponse)
+		if redisError == nil {
+			logrus.Infof("Successfully fetched the data for status from the Redis")
+			c.JSON(http.StatusOK, StatusResponse)
+			return
+		}
+	}
+	scyllaClient, err := client.CreateScyllaDBClient()
+	if err != nil {
+		logrus.Errorf("Error in reading data from scylladb: %v", err)
+		errorResponse(c, "Cannot read data from the system, request failure")
+		return
+	}
+	location := make(map[string]int)
+	data := scyllaClient.Query("SELECT status FROM employee_info").Iter()
+	for data.Scan(&employee.Status) {
+		_, exist := location[employee.Status]
+		if exist {
+			location[employee.Status] += 1
+		} else {
+			location[employee.Status] = 1
+		}
+	}
+	jsonData, err := json.Marshal(location)
+	if err != nil {
+		logrus.Errorf("Error in reading data from scylladb: %v", err)
+		errorResponse(c, "Cannot read data from the system, request failure")
+		return
+	}
+	if redisEnabled && redisError == redis.Nil {
+		writeinRedis("location", string(jsonData))
+	}
+	logrus.Infof("Successfully fetched the data for all location from the ScyllaDB")
+	json.Unmarshal(jsonData, &StatusResponse)
+	c.JSON(http.StatusOK, StatusResponse)
+	return
+}
+
 // @Summary ReadCompleteEmployeesData is a method to read all employee's information
 // @Schemes http
 // @Description Read all employee data from database

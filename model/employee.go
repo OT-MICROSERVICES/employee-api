@@ -24,13 +24,17 @@ type Location struct {
 	Noida     int `json:"Noida"`
 	Bangalore int `json:"Bangalore"`
 	Hyderabad int `json:"Hyderabad"`
-	Delaware  int `json:"Delaware"`
+	Delhi     int `json:"Delhi"`
 }
 
 // Designation is a struct for mapping designation interface for all employees
 type Designation struct {
-	DevOpsConsultant  int `json:"DevOps Consultant"`
-	DevOpsSpecialist  int `json:"DevOps Specialist"`
-	GrowthPartner     int `json:"Growth Partner"`
-	ConsultantPartner int `json:"Consultant Partner"`
+	DevOps    int `json:"DevOps"`
+	Developer int `json:"Developer"`
+}
+
+// Status is a struct for mapping location interface of all employees
+type Status struct {
+	CurrentEmployee int `json:"Current Employee"`
+	ExEmployee      int `json:"Ex-Employee"`
 }
